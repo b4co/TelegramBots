@@ -1,9 +1,8 @@
 <?php
 
 
-define('BOT_TOKEN', 'YOUR_TOKEN_HERE');
+define('BOT_TOKEN', 'YOUR_APIKEY_HERE');
 define('API_URL', 'https://api.telegram.org/bot'.BOT_TOKEN.'/');
-
 
 function apiRequestWebhook($method, $parameters) {
   if (!is_string($method)) {
@@ -96,7 +95,6 @@ function processMessage($message) {
   // process incoming message
   $message_id = $message['message_id'];
   $chat_id = $message['chat']['id'];
-
   if (isset($message['text'])) {
     // incoming text message
     $text = $message['text'];
@@ -159,12 +157,17 @@ function processMessage($message) {
         apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "parse_mode" => 'Markdown', "text" => "#kopimi @PR1V8"));
         break;
       case '/limpar':
-        $limparafk = fopen("afklist.txt", 'w+');
-        fclose($limparafk);
-        apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "parse_mode" => 'Markdown', "text" => "_Afklist limpa!_"));
+        $adme = array("pr1muS");
+        if (in_array($username, $adme)) {
+          $limparafk = fopen("afklist.txt", 'w+');
+          fclose($limparafk);
+          $limparblk = fopen("blacklist.txt", 'w+');
+          fclose($limparblk);
+          apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "parse_mode" => 'Markdown', "text" => "_Listas limpas!_"));
+        }
         break;
       case '/ajuda':
-        $listacomandos = "- /afk [razao]\n- /back\n- /afklist\n- /pr1v8";
+        $listacomandos = "- /afk [razao]\n- /back\n- /afklist\n- /pr1v8\n- /ban\n- /blacklist\n- /unban";
         apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "parse_mode" => 'Markdown', "text" => "$listacomandos"));
         break;
       case '/rank':
@@ -195,6 +198,51 @@ function processMessage($message) {
       case '/grupo':
         apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "Grupo: $title\nId: $chat_id"));
         break;
+      case '/ban':
+        $iname = $message['reply_to_message']['from']['first_name'];
+        $id = $message['reply_to_message']['from']['id'];
+        $iusername = $message['reply_to_message']['from']['username'];
+        $admin = array("pr1muS", "vMoriarty", "CowFboy", "Xcaminhante");
+        if (isset($id) && in_array($username, $admin)) {
+          apiRequest("kickChatMember", array('chat_id' => $chat_id, 'user_id' => $id));
+          $blacklist = file("blacklist.txt", FILE_IGNORE_NEW_LINES);
+          if (in_array($iusername, $blacklist)) {
+
+          } else {
+            $blacklistme = array_push($blacklist, $iusername);
+            $makemetxt = implode("\n", array_values($blacklist));
+            $openblk = fopen("blacklist.txt", 'w+');
+            fwrite($openblk, $makemetxt);
+            fclose($openblk);
+          }
+          apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "$iname banido"));
+        }
+        
+        break;
+      case '/unban':
+        $iname = $message['reply_to_message']['from']['first_name'];
+        $id = $message['reply_to_message']['from']['id'];
+        $iusername = $message['reply_to_message']['from']['username'];
+        $openblk = file("blacklist.txt", FILE_IGNORE_NEW_LINES);
+        if (in_array($iusername, $openblk)) {
+          apiRequest("unbanChatMember", array('chat_id' => $chat_id, 'user_id' => $id));
+          $srcblk = array_search($iusername, $openblk);
+          unset($openblk[$srcblk]);
+          $makemetxt = implode("\n", array_values($openblk));
+          $writeagain = fopen("blacklist.txt", 'w+');
+          fwrite($writeagain, $makemetxt);
+          fclose($writeagain);
+          apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "$iname desbanido"));
+        }
+
+        break;
+      case '/blacklist':
+        $openblk = file_get_contents("blacklist.txt");
+        if (strlen($openblk) < 1) {
+          $openblk = "Nenhum usuário banido!";
+        }
+        apiRequest("sendMessage", array('chat_id' => $chat_id, "reply_to_message_id" => $message_id, "text" => "$openblk"));
+        break;
       default:
         # code...
         break;
@@ -204,7 +252,7 @@ function processMessage($message) {
   }
 }
 
-define('WEBHOOK_URL', 'YOUR_WEBHOOK_URL_HERE');
+define('WEBHOOK_URL', 'WEBHOOK_URL_HERE');
 
 if (php_sapi_name() == 'cli') {
   // if run from console, set or delete webhook
