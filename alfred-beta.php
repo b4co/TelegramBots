@@ -1,5 +1,5 @@
 <?php
-# change: YOUR_API_KEY & YOUR_WEBHOOK_URL & ADD_ADMIN_USERNAMES_HERE
+# change: YOUR_API_KEY & YOUR_WEBHOOK_URL & ADD_ADMIN_USERNAMES_HERE & LOG_CHANNEL_ID
 
 define('BOT_TOKEN', 'YOUR_API_KEY');
 define('API_URL', 'https://api.telegram.org/bot'.BOT_TOKEN.'/');
@@ -124,7 +124,7 @@ function processMessage($message) {
     $log = "#new_user\nGrupo: $title\n\n#user_data\nNome: $nnome\nUsername: @$nuser\nid: #id$nid";
     $welcome = "Bem-vindx ao grupo $nnome, @$nuser.\nId: #id$nid\nLeia as regras na descrição do grupo :D.";
     apiRequest("sendMessage", array('chat_id' => $chat_id, 'text' => "$welcome"));
-    apiRequest("sendMessage", array('chat_id' => "-1001104564232", 'text' => "$log"));
+    apiRequest("sendMessage", array('chat_id' => "LOG_CHANNEL_ID", 'text' => "$log"));
 
   }
 
@@ -150,7 +150,7 @@ function processMessage($message) {
 
         if (isset($id) && in_array($username, $admin_list) && in_array($iusername, $admin_list) == false) {
           apiRequest("kickChatMember", array('chat_id' => $chat_id, 'user_id' => $id));
-          apiRequest("sendMessage", array('chat_id' => "-1001104564232", 'text' => "$banlog"));
+          apiRequest("sendMessage", array('chat_id' => "LOG_CHANNEL_ID", 'text' => "$banlog"));
           $blacklist = file("blacklist.p8", FILE_IGNORE_NEW_LINES);
           if (in_array($iusername, $blacklist)) {
 
@@ -277,7 +277,7 @@ function processMessage($message) {
           $setname = apiRequest("setChatTitle", array('chat_id' => $chat_id, 'title' => "$topico"));
           if($setname) {
             apiRequest("sendMessage", array('chat_id' => $chat_id, 'reply_to_message_id' => $message_id, 'text' => "Topico setado para $topico"));
-            apiRequest("sendMessage", array('chat_id' => "-1001104564232", 'text' => "$logtopic"));
+            apiRequest("sendMessage", array('chat_id' => "LOG_CHANNEL_ID", 'text' => "$logtopic"));
           }
         }
         break;
