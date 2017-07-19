@@ -6,6 +6,7 @@
 #### Telegram Bot using Webhook
 
 Commands(bot must be admin & it should be a supergroup):
+ * /add (run this bfore anything, saves the group info so /settopic can work)
  * /ban
  * /unban
  * /blacklist [for users banned with /ban]
@@ -17,6 +18,7 @@ Commands(bot must be admin & it should be a supergroup):
  * /promote [to mod]
  * /demote [from mod]
  * /settopic (Group_Name + #ExempleTopic) [change groups name for value]
+ * /settopic -d [set the name to the default(saved on .CHAT_ID.p8)]
  * /info [about an user]
  * /pin [fix a message]
 
