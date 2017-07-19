@@ -20,7 +20,7 @@ Commands(bot must be admin & it should be a supergroup):
  * /settopic (Group_Name + #ExempleTopic) [change groups name for value]
  * /settopic -d [set the name to the default(saved on .CHAT_ID.p8)]
  * /info [about an user]
- * /pin [fix a message]
+ * /fix [fix a message]
 
 
 
