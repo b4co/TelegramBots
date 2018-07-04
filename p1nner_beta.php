@@ -108,13 +108,15 @@ function processMessage($message) {
     foreach ($admin_array as $key => $value) {
       array_push($admin_list, $value['user']['username']);
     }
-    $tmd5 = file_get_contents("msg_md5.p8");
-    $a_tmd5 = explode("\n", $tmd5);
-    $fmd5 = file_get_contents("file_md5.p8");
-    $a_fmd5 = explode("\n", $fmd5);
+
 
     switch ($comando) {
       case '/pin':
+        $tmd5 = file_get_contents("msg_md5.p8");
+        $a_tmd5 = explode("\n", $tmd5);
+        $fmd5 = file_get_contents("file_md5.p8");
+        $a_fmd5 = explode("\n", $fmd5);
+        
         $msgid = $message['reply_to_message']['message_id'];
         
         if(array_key_exists("document", $message['reply_to_message']) && in_array($username, $admin_list) && strlen($msgid) > 1) {
