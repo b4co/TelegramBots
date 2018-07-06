@@ -66,7 +66,7 @@ class API {
 }
 
 class Bot {
-	private $comando, $chat_id, $msg_id, $api, $resposta, $content, $update, $run;
+	private $comando, $chat_id, $msg_id, $api, $resposta;
 
 	function processMessage($mensagem) {
 		$this->chat_id = $mensagem['chat']['id'];
