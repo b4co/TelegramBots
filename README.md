@@ -1,9 +1,10 @@
 # Pr1v8["Dev"]
+---
 
 **Feel free to h3lp**
 
 ## alfred-beta.php
-#### Telegram Bot using Webhook
+#### simple irc-like bot for telegram groups
 
 Commands(bot must be admin & it should be a supergroup):
  * /add (run this bfore anything, saves the group info so /settopic can work)
@@ -22,6 +23,15 @@ Commands(bot must be admin & it should be a supergroup):
  * /info [about an user]
  * /fix [fix a message]
 
+***
 
+## basicBotOOP.php
+#### basic code for telegram bot using webhook
 
-Link of dev-group: https://t.me/joinchat/AAAAAECtZr6p0a0BpzWVjg
+***
+
+## chImporter.php
+#### bot that saves message from channel to a database
+Add the bot to your channel, set the webhook at telegram api, setup database and change db info at the script
+
+***
